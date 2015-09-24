@@ -1,10 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.UUID;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -12,9 +8,6 @@ import com.mongodb.DBObject;
 import com.mongodb.MapReduceCommand;
 import com.mongodb.MapReduceOutput;
 import com.mongodb.MongoClient;
-import com.mongodb.client.MapReduceIterable;
-import com.mongodb.client.MongoDatabase;
-
 
 public class Programa {
 
@@ -22,6 +15,7 @@ public class Programa {
 
 		
 		FileReader file = new FileReader("C:\\Users\\Yo\\Desktop\\donQuijote.txt");
+	
 	//	FileReader file = new FileReader("C:\\Users\\Yo\\Desktop\\Movimientos.txt");
 
         BufferedReader br = new BufferedReader(file);
@@ -38,28 +32,27 @@ public class Programa {
         
         BasicDBObject document ;
 		
-		while (line != null ) {
-		    
+		while (line != null ) {    
        
             String[] partes = line.split(" ");
-           
             
             for (int i=0; i < partes.length ; i++) {
             	
             	document= new BasicDBObject();
 
             	if (line.trim().isEmpty() != true){
-            	document.put("palabra", partes[i]);
+            		
+            		document.put("palabra", partes[i]);
            
-            	coll.insert(document);
+            		coll.insert(document);
+            	
             	}
+            	
             }
 
             line = br.readLine();   
 
-            
-		    
-			}
+		}
 		
 		
 		
@@ -74,15 +67,19 @@ public class Programa {
                 null, MapReduceCommand.OutputType.INLINE, null);
 
 
-				MapReduceOutput out = coll.mapReduce(cmd);
+		MapReduceOutput out = coll.mapReduce(cmd);
 				
+		
 		for (DBObject o : out.results()) {
+			
 			System.out.println(o.toString());
+			
 		}
 		
 		System.out.println("Emit: " + out.getEmitCount());
 		
 		System.out.println("Output: " + out.getOutputCount());
+		
 	}
 
 }
